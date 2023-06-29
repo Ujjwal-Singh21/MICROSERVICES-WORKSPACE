@@ -1,0 +1,9 @@
+package com.seleniumexpress.addressservice.entity;
+
+import jakarta.persistence.Entity;
+
+@Entity
+@Table(name = "address")
+public class Address {
+
+}

@@ -1,0 +1,5 @@
+package com.seleniumexpress.addressservice.dao;
+
+public interface AddressRepo {
+
+}

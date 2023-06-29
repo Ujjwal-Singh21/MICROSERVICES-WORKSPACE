@@ -1,0 +1,5 @@
+package com.seleniumexpress.addressservice.service;
+
+public class AddressService {
+
+}

@@ -1,0 +1,5 @@
+package com.seleniumexpress.addressservice.config;
+
+public class AddressConfig {
+
+}

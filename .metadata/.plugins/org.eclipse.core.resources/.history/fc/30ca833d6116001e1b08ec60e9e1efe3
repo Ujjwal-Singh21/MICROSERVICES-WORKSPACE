@@ -1,0 +1,13 @@
+package com.seleniumexpress.addressservice.config;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AddressAppConfig {
+	
+	public ModelMapper getModelMapper() {
+		return new ModelMapper();
+	}
+
+}

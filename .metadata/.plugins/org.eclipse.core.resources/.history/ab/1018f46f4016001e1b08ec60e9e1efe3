@@ -1,0 +1,5 @@
+package com.seleniumexpress.employeeservice.response;
+
+public class EmployeeResponse {
+
+}
