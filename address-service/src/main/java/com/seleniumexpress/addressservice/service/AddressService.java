@@ -19,6 +19,8 @@ public class AddressService {
 
 	public AddressResponse getAddressByEmployeeId(int employeeId) {
 		
+		System.out.println("Finding employee with employee id " + employeeId);
+		
 		Address address = repo.getAddressByEmployeeId(employeeId);
 
 		AddressResponse addressResponse = modelMapper.map(address, AddressResponse.class);

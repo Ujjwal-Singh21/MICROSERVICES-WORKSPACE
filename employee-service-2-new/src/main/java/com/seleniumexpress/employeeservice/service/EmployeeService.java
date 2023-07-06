@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -35,7 +36,9 @@ public class EmployeeService {
 		
 		EmployeeResponse employeeResponse = modelMapper.map(employee, EmployeeResponse.class);
 		
-		AddressResponse addressResponse = addressClient.getAddressByEmployeeId(id);
+		ResponseEntity<AddressResponse> responseEntity = addressClient.getAddressByEmployeeId(id);
+		
+		AddressResponse addressResponse = responseEntity.getBody();
 		
 		employeeResponse.setAddressResponse(addressResponse);
 		
