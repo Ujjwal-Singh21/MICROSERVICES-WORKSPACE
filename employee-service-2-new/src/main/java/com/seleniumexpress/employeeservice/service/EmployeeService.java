@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.seleniumexpress.employeeservice.dao.EmployeeRepo;
 import com.seleniumexpress.employeeservice.entity.Employee;
+import com.seleniumexpress.employeeservice.feingclient.AddressClient;
 import com.seleniumexpress.employeeservice.response.AddressResponse;
 import com.seleniumexpress.employeeservice.response.EmployeeResponse;
 
@@ -17,25 +18,15 @@ import com.seleniumexpress.employeeservice.response.EmployeeResponse;
 public class EmployeeService {
 	
 	@Autowired
-	private WebClient webClient;
-
-	@Autowired
 	private EmployeeRepo repo;
 	
 	@Autowired
 	private ModelMapper modelMapper;
 	
-//	@Autowired
-	private RestTemplate restTemplate;
+	@Autowired
+	private AddressClient addressClient;
 	
-//	@Value("${address-service.base.url}")
-//	private String baseUrl;
 	
-//	public EmployeeService(@Value("${address-service.base.url}") String baseUrl, RestTemplateBuilder builder) {
-//		this.restTemplate = builder.rootUri(baseUrl).build();
-//	}
-//	
-
 	// GET BY ID
 	//----------
 	public EmployeeResponse getEmployeeById(int id) {
@@ -44,27 +35,14 @@ public class EmployeeService {
 		
 		EmployeeResponse employeeResponse = modelMapper.map(employee, EmployeeResponse.class);
 		
-//		AddressResponse addressResponse = restTemplate.getForObject(baseUrl+"/address/{id}", AddressResponse.class, id);
-		
-//		AddressResponse addressResponse = usingRestTemplate(id);
-		
-		AddressResponse addressResponse = webClient
-				                          .get()
-				                          .uri("/address/"+id) 
-				                          .retrieve()
-				                          .bodyToMono(AddressResponse.class)
-				                          .block();
+		AddressResponse addressResponse = addressClient.getAddressByEmployeeId(id);
 		
 		employeeResponse.setAddressResponse(addressResponse);
 		
 		return employeeResponse;
 	}
 
-	private AddressResponse usingRestTemplate(int id) {
-		return restTemplate.getForObject("/address/{id}", AddressResponse.class, id);
-	}
-	
-	
+
 	
 	
 	

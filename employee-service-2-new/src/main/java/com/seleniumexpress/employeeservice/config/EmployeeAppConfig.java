@@ -17,14 +17,4 @@ public class EmployeeAppConfig {
 		return new ModelMapper();
 	}
 
-//	@Bean
-//	public RestTemplate getRestTemplate() {
-//		return new RestTemplate();
-//	}
-
-	@Bean
-	public WebClient getWebClient() {
-		return WebClient.builder().baseUrl(baseUrl).build();
-	}
-
 }
