@@ -19,8 +19,11 @@ public class EmployeeAppConfig {
 		return new ModelMapper();
 	}
 
-	@LoadBalanced // client-side load balancer using round-robin fashion with the help of spring cloud load balancer added while adding 
-	// spring-cloud-netflix-client dependency
+	/* 
+	 * client-side load balancer using round-robin fashion with the help of spring cloud load balancer added 
+	   while adding spring-cloud-netflix-client dependency 
+	 */
+	@LoadBalanced 
 	@Bean
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
