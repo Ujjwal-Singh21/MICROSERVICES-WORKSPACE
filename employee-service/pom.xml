@@ -88,6 +88,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		
+		<!-- INTERNALLY HAS TRANSITIVE DEPENDENCY OF EUREKA CLOUD LOAD BALANCER WHICH DOES AUTOAMTICALLY LOAD BALANCING FOR US -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

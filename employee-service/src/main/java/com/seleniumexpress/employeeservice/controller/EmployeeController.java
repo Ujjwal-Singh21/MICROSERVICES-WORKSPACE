@@ -1,5 +1,7 @@
 package com.seleniumexpress.employeeservice.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ public class EmployeeController {
 		EmployeeResponse employeeResponse = service.getEmployeeById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(employeeResponse);
 	}
+	
 
 	// ADD
 	@PostMapping("/add-employee")
@@ -37,6 +40,15 @@ public class EmployeeController {
 	@PutMapping("/update-Employee/{id}")
 	public Employee updateEmployee(@RequestBody Employee emp, @PathVariable("id") int id) {
 		return service.updateEmployee(emp, id);
+	}
+	
+	// GET ALL EMPLOYEES
+	@GetMapping("/getAllEmployees")
+	public ResponseEntity<List<EmployeeResponse>> getAllEmployees() {
+		
+		List<EmployeeResponse> employeeResponseList = service.getAllEmployees();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(employeeResponseList);
 	}
 
 }

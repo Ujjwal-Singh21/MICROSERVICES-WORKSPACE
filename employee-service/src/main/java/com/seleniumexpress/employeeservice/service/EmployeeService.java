@@ -1,16 +1,22 @@
 package com.seleniumexpress.employeeservice.service;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.seleniumexpress.employeeservice.dao.EmployeeRepo;
 import com.seleniumexpress.employeeservice.entity.Employee;
+import com.seleniumexpress.employeeservice.openfeignclients.AddressClient;
 import com.seleniumexpress.employeeservice.response.AddressResponse;
 import com.seleniumexpress.employeeservice.response.EmployeeResponse;
 
@@ -35,6 +41,9 @@ public class EmployeeService {
 	@Autowired
 	private LoadBalancerClient loadBalancerClient;
 	
+	@Autowired
+	private AddressClient addressClient;
+	
 //	@Value("${address-service.base.url}")
 //	private String baseUrl;
 	
@@ -51,12 +60,15 @@ public class EmployeeService {
 		
 		EmployeeResponse employeeResponse = modelMapper.map(employee, EmployeeResponse.class);
 		
+		// USING REST TEMPLATE
+		//--------------------
 //		AddressResponse addressResponse = restTemplate.getForObject(baseUrl+"/address/{id}", AddressResponse.class, id);
 		
-		AddressResponse addressResponse = usingRestTemplate(id);
+//		AddressResponse addressResponse = usingRestTemplate(id);
 		
 		
-		
+		// USING WEB CLIENT
+		//-----------------
 //		AddressResponse addressResponse = webClient
 //				                          .get()
 //				                          .uri("/address/"+id) 
@@ -66,6 +78,11 @@ public class EmployeeService {
 		
 //		AddressResponse addressResponse = usingWebClient(id);
 		
+		
+		// USING OPEN FEIGN CLIENT
+		//------------------------
+		ResponseEntity<AddressResponse> addressResponseEntity = addressClient.getAddressByEmployeeId(id);
+		AddressResponse addressResponse = addressResponseEntity.getBody();
 		
 		
 		employeeResponse.setAddressResponse(addressResponse);
@@ -133,13 +150,35 @@ public class EmployeeService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
 
+    // GET ALL EMPLOYEES ALONG WITH THEIR ADDRESS
+	public List<EmployeeResponse> getAllEmployees() {
+		
+		List<Employee> employeesList = repo.findAll();
+		
+		EmployeeResponse[] employeesResponseArr = modelMapper.map(employeesList, EmployeeResponse[].class);
+		
+		List<EmployeeResponse> employeesResponseList = Arrays.asList(employeesResponseArr);
+		
+		// making an api call to address service and getting list of all addresses
+		ResponseEntity<List<AddressResponse>> addressResponses = addressClient.getAllAddresses();
+		List<AddressResponse> addressResponseList = addressResponses.getBody();
+		
+		
+		employeesResponseList.forEach(employee -> {
+			
+			for(AddressResponse address : addressResponseList) {
+				if(address.getId() == employee.getId()) {
+					employee.setAddressResponse(address);
+				}
+			}
+		});
+		
+		return employeesResponseList;
+	}
+	
+	
+	
 	// ADD
 	public Employee addEmployee(Employee emp) {
 		return repo.save(emp);
@@ -149,4 +188,6 @@ public class EmployeeService {
 	public Employee updateEmployee(Employee emp, int id) {
 		return repo.save(emp);
 	}
+
+
 }
