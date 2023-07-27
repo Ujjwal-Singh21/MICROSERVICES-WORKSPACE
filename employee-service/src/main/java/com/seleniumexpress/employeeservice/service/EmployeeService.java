@@ -97,7 +97,7 @@ public class EmployeeService {
 //		String uri = serviceInstance.getUri().toString();
 		
 //		String contextPath = serviceInstance.getMetadata().get("configPath");
-//		System.out.println("URI + contextPath >>>>>>>>>>>>>>" + uri + contextPath); //-> http://LIN76004068.corp.capgemini.com:8083/address-app/api
+//		System.out.println("URI + contextPath >>>>" + uri + contextPath); //-> http://LIN76004068.corp.capgemini.com:8083/address-app/api
 		
 //		System.out.println("USERNAME>> " + serviceInstance.getMetadata().get("username") + 
 //				           " PASSWORD>>> " + serviceInstance.getMetadata().get("password"));
